@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  causal_ai_app:
+    build: .
+    container_name: causal_ai_app
+    ports:
+      - "8000:8000"
+    networks:
+      - causal_network
+
+  causal_ai_dashboard:
+    build: .
+    container_name: causal_ai_dashboard
+    ports:
+      - "8501:8501"
+    depends_on:
+      - causal_ai_app
+    networks:
+      - causal_network
+    command: streamlit run dashboard.py --server.port 8501 --server.address 0.0.0.0
+
+  db:
+    image: postgres:15
+    container_name: causal_ai_db
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: causal_ai
+    ports:
+      - "5432:5432"
+    networks:
+      - causal_network
+
+networks:
+  causal_network:
+    driver: bridge

@@ -1,0 +1,19 @@
+# ✅ Python 3.9 사용
+FROM python:3.9
+
+WORKDIR /app
+
+# ✅ 의존성 캐싱을 활용하여 설치 속도 최적화
+COPY requirements.txt requirements.txt
+
+# ✅ 일반 패키지 먼저 설치 (ML 패키지는 나중에)
+RUN pip install --progress-bar off -r requirements.txt
+
+# ✅ PyTorch, yfinance 등 무거운 패키지를 별도 설치
+RUN pip install --progress-bar off torch yfinance
+
+# ✅ 프로젝트 코드 복사
+COPY . .
+
+# ✅ Streamlit 실행
+CMD ["streamlit", "run", "dashboard.py", "--server.port=8501", "--server.address=0.0.0.0"]

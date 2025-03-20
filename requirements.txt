@@ -16,3 +16,10 @@ transformers
 sentence-transformers
 feedparser
 reportlab
+
+uvicorn
+fastapi
+
+openai
+
+streamlit 
